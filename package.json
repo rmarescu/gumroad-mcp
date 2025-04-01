@@ -1,0 +1,25 @@
+{
+  "name": "gumroad-mcp",
+  "version": "0.0.1",
+  "description": "Gumroad MCP Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmarescu/gumroad-mcp.git"
+  },
+  "keywords": [
+    "gumroad",
+    "api",
+    "mcp",
+    "server"
+  ],
+  "author": "Razvan Marescu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rmarescu/gumroad-mcp/issues"
+  },
+  "homepage": "https://github.com/rmarescu/gumroad-mcp#readme"
+}
