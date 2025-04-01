@@ -2,9 +2,14 @@
   "name": "gumroad-mcp",
   "version": "0.0.1",
   "description": "Gumroad MCP Server",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format:fix": "prettier --write .",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -14,6 +19,7 @@
     "gumroad",
     "api",
     "mcp",
+    "modelcontextprotocol",
     "server"
   ],
   "author": "Razvan Marescu",
@@ -23,8 +29,24 @@
   },
   "homepage": "https://github.com/rmarescu/gumroad-mcp#readme",
   "devDependencies": {
+    "@eslint/js": "^9.23.0",
     "@types/node": "^22.13.17",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
+    "@typescript-eslint/parser": "^8.29.0",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-import-resolver-typescript": "^4.3.1",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.29.0"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "npm run lint:fix",
+    "*.{json,md}": "npm run format:fix"
   }
 }
