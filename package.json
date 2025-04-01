@@ -21,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/rmarescu/gumroad-mcp/issues"
   },
-  "homepage": "https://github.com/rmarescu/gumroad-mcp#readme"
+  "homepage": "https://github.com/rmarescu/gumroad-mcp#readme",
+  "devDependencies": {
+    "@types/node": "^22.13.17",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
 }
