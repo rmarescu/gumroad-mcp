@@ -3,13 +3,21 @@
   "version": "0.0.1",
   "description": "Gumroad MCP Server",
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "bin": {
+    "gumroad-mcp": "./dist/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format:fix": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "npm run build",
+    "watch": "tsup --watch",
+    "build": "rimraf dist && tsup src/index.ts --format cjs,esm --dts && shx chmod +x dist/index.js",
+    "start": "node dist/index.js",
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "dev:inspect": "npx @modelcontextprotocol/inspector node --loader ts-node/esm src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -28,7 +36,13 @@
     "url": "https://github.com/rmarescu/gumroad-mcp/issues"
   },
   "homepage": "https://github.com/rmarescu/gumroad-mcp#readme",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.8.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.2"
+  },
   "devDependencies": {
+    "@eslint/compat": "^1.2.8",
     "@eslint/js": "^9.23.0",
     "@types/node": "^22.13.17",
     "@typescript-eslint/eslint-plugin": "^8.29.0",
@@ -41,7 +55,10 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
     "prettier": "^3.2.5",
+    "rimraf": "^6.0.1",
+    "shx": "^0.4.0",
     "ts-node": "^10.9.2",
+    "tsup": "^8.4.0",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.29.0"
   },
