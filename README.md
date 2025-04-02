@@ -50,7 +50,7 @@ Example config
   "mcpServers": {
     "gumroad": {
       "command": "npx",
-      "args": ["gumroad-mcp@latest"],
+      "args": ["-y", "gumroad-mcp@latest"],
       "env": {
         "GUMROAD_ACCESS_TOKEN": "<YOUR_TOKEN>"
       }
@@ -68,7 +68,7 @@ If you're using a self-hosted Gumroad instance, you can configure the server to 
   "mcpServers": {
     "gumroad": {
       "command": "npx",
-      "args": ["gumroad-mcp@latest"],
+      "args": ["-y", "gumroad-mcp@latest"],
       "env": {
         "GUMROAD_ACCESS_TOKEN": "<YOUR_TOKEN>",
         "GUMROAD_BASE_URL": "https://example.com"
