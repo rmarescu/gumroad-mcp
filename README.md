@@ -79,7 +79,7 @@ If you're using a self-hosted Gumroad instance, you can configure the server to 
 ```
 
 > [!NOTE]
-> The server automatically appends `/api/v2` to your base URL. For example, with `GUMROAD_BASE_URL="https://example.com"`, API requests will be sent to `https://example.com/api/v2`.
+> The server automatically appends the API version (`/v2`) to your base URL. For example, with `GUMROAD_BASE_URL="https://example.com"`, API requests will be sent to `https://example.com/v2`.
 
 ## Contributing
 

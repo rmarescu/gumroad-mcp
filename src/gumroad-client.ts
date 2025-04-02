@@ -87,7 +87,7 @@ export class GumroadClient {
       // Disable certificate verification for non-production environments (e.g. for gumroad.dev)
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
     }
-    this.apiUrl = `${url}/api/v2`;
+    this.apiUrl = `${url}/v2`;
     console.error("Gumroad client initialized with base URL:", this.apiUrl);
   }
 
