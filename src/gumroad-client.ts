@@ -53,12 +53,40 @@ interface Sale {
   license_key?: string;
 }
 
+interface OfferCode {
+  id: string;
+  name: string;
+  amount_cents: number;
+  offer_type: string;
+  max_purchase_count: number;
+  universal: boolean;
+  product_id?: string;
+  resource_id?: string;
+  created_at: string;
+  updated_at: string;
+  expires_at?: string | null;
+  claims_count?: number;
+}
+
+interface CreateOfferCodeArgs {
+  name: string;
+  amount_off: number;
+  offer_type?: "cents" | "percent";
+  max_purchase_count?: number;
+  universal?: boolean;
+}
+
+interface UpdateOfferCodeArgs {
+  max_purchase_count?: number;
+}
+
 interface GumroadResponse<T> {
   success: boolean;
   next_page_key?: string;
   next_page_url?: string;
   products?: T[];
   sales?: T[];
+  offer_codes?: T[];
 }
 
 interface GetSalesArgs {
@@ -146,6 +174,65 @@ export class GumroadClient {
     const response = await fetch(url, {
       headers: this.headers,
       method: "PUT",
+    });
+    return response.json();
+  }
+
+  async getOfferCodes(productId: string): Promise<GumroadResponse<OfferCode>> {
+    const url = `${this.apiUrl}/products/${productId}/offer_codes`;
+    console.error("Making request to:", url);
+    const response = await fetch(url, { headers: this.headers });
+    return response.json();
+  }
+
+  async getOfferCode(
+    productId: string,
+    offerCodeId: string,
+  ): Promise<{ success: boolean; offer_code?: OfferCode; message?: string }> {
+    const url = `${this.apiUrl}/products/${productId}/offer_codes/${offerCodeId}`;
+    console.error("Making request to:", url);
+    const response = await fetch(url, { headers: this.headers });
+    return response.json();
+  }
+
+  async createOfferCode(
+    productId: string,
+    params: CreateOfferCodeArgs,
+  ): Promise<{ success: boolean; offer_code?: OfferCode; message?: string }> {
+    const url = `${this.apiUrl}/products/${productId}/offer_codes`;
+    console.error("Making request to:", url);
+
+    const response = await fetch(url, {
+      body: JSON.stringify(params),
+      headers: this.headers,
+      method: "POST",
+    });
+    return response.json();
+  }
+
+  async updateOfferCode(
+    productId: string,
+    offerCodeId: string,
+    params: UpdateOfferCodeArgs,
+  ): Promise<{ success: boolean; offer_code?: OfferCode; message?: string }> {
+    const url = `${this.apiUrl}/products/${productId}/offer_codes/${offerCodeId}`;
+    console.error("Making request to:", url);
+
+    const response = await fetch(url, {
+      body: JSON.stringify(params),
+      headers: this.headers,
+      method: "PUT",
+    });
+    return response.json();
+  }
+
+  async deleteOfferCode(productId: string, offerCodeId: string): Promise<{ success: boolean; message?: string }> {
+    const url = `${this.apiUrl}/products/${productId}/offer_codes/${offerCodeId}`;
+    console.error("Making request to:", url);
+
+    const response = await fetch(url, {
+      headers: this.headers,
+      method: "DELETE",
     });
     return response.json();
   }

@@ -10,13 +10,15 @@ The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) allows AI as
 
 Once configured, try these commands in your MCP-compatible client:
 
-- How many sales did I make last month?
-- Show my recent Gumroad sales
+- How many sales did I make last month vs a year ago?
+- Generate an interactive chart with last year's sales
 - List my top-selling products on Gumroad from last year
 - Show month-over-month trend of my top-selling product last year
-- Show sales for my product "Product Name"
-- Disable my product with ID "12345"
-- Enable my product with ID "12345"
+- Disable "Product Name" product
+- Enable "Product Name" product
+- List all offer codes for "Product Name"
+- Create a new offer code "FAFO" with 99% off for "Product Name"
+- Delete offer code "abc123" from "Product Name"
 
 ## Tools
 
@@ -30,6 +32,14 @@ Once configured, try these commands in your MCP-compatible client:
 ### [Sales](https://gumroad.com/api#sales)
 
 - `gumroad_get_sales` - Get sales data
+
+### [Offer Codes](https://gumroad.com/api#offer-codes)
+
+- `gumroad_get_offer_codes` - Get all offer codes for a product
+- `gumroad_get_offer_code` - Get a single offer code
+- `gumroad_create_offer_code` - Create a new offer code
+- `gumroad_update_offer_code` - Update an existing offer code
+- `gumroad_delete_offer_code` - Delete an offer code
 
 ### [User](https://gumroad.com/api#user)
 

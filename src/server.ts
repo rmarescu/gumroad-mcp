@@ -90,6 +90,79 @@ const enableProduct: Tool = {
   },
 };
 
+const getOfferCodes: Tool = {
+  name: "gumroad_get_offer_codes",
+  description: "Retrieves all offer codes for a product",
+  inputSchema: {
+    type: "object",
+    properties: {
+      product_id: { type: "string", description: "The product ID to get offer codes for" },
+    },
+    required: ["product_id"],
+  },
+};
+
+const getOfferCode: Tool = {
+  name: "gumroad_get_offer_code",
+  description: "Retrieves a single offer code by its ID for a specific product",
+  inputSchema: {
+    type: "object",
+    properties: {
+      product_id: { type: "string", description: "The product ID the offer code belongs to" },
+      offer_code_id: { type: "string", description: "The ID of the offer code to retrieve" },
+    },
+    required: ["product_id", "offer_code_id"],
+  },
+};
+
+const createOfferCode: Tool = {
+  name: "gumroad_create_offer_code",
+  description: "Creates a new offer code for a product",
+  inputSchema: {
+    type: "object",
+    properties: {
+      product_id: { type: "string", description: "The ID of the product this offer applies to" },
+      name: { type: "string", description: "The name/code of the offer (coupon code used at checkout)" },
+      amount_off: { type: "number", description: "The amount to discount" },
+      offer_type: {
+        type: "string",
+        enum: ["cents", "percent"],
+        description: "The type of offer (cents or percent). Default: cents",
+      },
+      max_purchase_count: { type: "number", description: "Maximum number of times this offer can be used" },
+      universal: { type: "boolean", description: "Whether this offer applies to all products. Default: false" },
+    },
+    required: ["product_id", "name", "amount_off"],
+  },
+};
+
+const updateOfferCode: Tool = {
+  name: "gumroad_update_offer_code",
+  description: "Updates the max purchase count of an existing offer code for a product",
+  inputSchema: {
+    type: "object",
+    properties: {
+      product_id: { type: "string", description: "The ID of the product this offer applies to" },
+      offer_code_id: { type: "string", description: "The ID of the offer code to update" },
+      max_purchase_count: { type: "number", description: "Maximum number of times this offer can be used" },
+    },
+    required: ["product_id", "offer_code_id"],
+  },
+};
+
+const deleteOfferCode: Tool = {
+  name: "gumroad_delete_offer_code",
+  description: "Deletes an offer code for a product",
+  inputSchema: {
+    type: "object",
+    properties: {
+      product_id: { type: "string", description: "The ID of the product this offer applies to" },
+      offer_code_id: { type: "string", description: "The ID of the offer code to delete" },
+    },
+    required: ["product_id", "offer_code_id"],
+  },
+};
+
 export const createServer = (accessToken: string, baseUrl: string | undefined) => {
   const gumroadClient = new GumroadClient(accessToken, baseUrl);
 
@@ -152,6 +225,64 @@ export const createServer = (accessToken: string, baseUrl: string | undefined) =
             content: [{ type: "text", text: JSON.stringify(response) }],
           };
         }
+        case "gumroad_get_offer_codes": {
+          const productId = request.params.arguments.product_id as string;
+          const response = await gumroadClient.getOfferCodes(productId);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+        case "gumroad_get_offer_code": {
+          const productId = request.params.arguments.product_id as string;
+          const offerCodeId = request.params.arguments.offer_code_id as string;
+          const response = await gumroadClient.getOfferCode(productId, offerCodeId);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+        case "gumroad_create_offer_code": {
+          // Type assertion to ensure type safety
+          const productId = request.params.arguments.product_id as string;
+          // Remove product_id from arguments as it's now a separate parameter
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { product_id: _, ...params } = request.params.arguments as unknown as {
+            product_id: string;
+            name: string;
+            amount_off: number;
+            offer_type?: "cents" | "percent";
+            max_purchase_count?: number;
+            universal?: boolean;
+          };
+
+          // Ensure amount_off is provided
+          if (typeof params.amount_off !== "number") {
+            throw new Error("amount_off is required and must be a number");
+          }
+
+          const response = await gumroadClient.createOfferCode(productId, params);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+        case "gumroad_update_offer_code": {
+          const productId = request.params.arguments.product_id as string;
+          const offerCodeId = request.params.arguments.offer_code_id as string;
+          // Remove product_id and offer_code_id from arguments as they're now separate parameters
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { product_id: _p, offer_code_id: _o, ...updateParams } = request.params.arguments;
+          const response = await gumroadClient.updateOfferCode(productId, offerCodeId, updateParams);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+        case "gumroad_delete_offer_code": {
+          const productId = request.params.arguments.product_id as string;
+          const offerCodeId = request.params.arguments.offer_code_id as string;
+          const response = await gumroadClient.deleteOfferCode(productId, offerCodeId);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
         default:
           throw new Error(`Unknown tool: ${request.params.name}`);
       }
@@ -173,7 +304,19 @@ export const createServer = (accessToken: string, baseUrl: string | undefined) =
   server.setRequestHandler(ListToolsRequestSchema, () => {
     console.error("Received ListToolsRequest");
     return {
-      tools: [getUser, getProduct, getProducts, getSales, disableProduct, enableProduct],
+      tools: [
+        getUser,
+        getProduct,
+        getProducts,
+        getSales,
+        disableProduct,
+        enableProduct,
+        getOfferCodes,
+        getOfferCode,
+        createOfferCode,
+        updateOfferCode,
+        deleteOfferCode,
+      ],
     };
   });
 
