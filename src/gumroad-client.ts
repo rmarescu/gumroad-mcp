@@ -129,4 +129,24 @@ export class GumroadClient {
     const response = await fetch(url, { headers: this.headers });
     return response.json();
   }
+
+  async disableProduct(productId: string): Promise<{ success: boolean; product?: Product; message?: string }> {
+    const url = `${this.apiUrl}/products/${productId}/disable`;
+    console.error("Making request to:", url);
+    const response = await fetch(url, {
+      headers: this.headers,
+      method: "PUT",
+    });
+    return response.json();
+  }
+
+  async enableProduct(productId: string): Promise<{ success: boolean; product?: Product; message?: string }> {
+    const url = `${this.apiUrl}/products/${productId}/enable`;
+    console.error("Making request to:", url);
+    const response = await fetch(url, {
+      headers: this.headers,
+      method: "PUT",
+    });
+    return response.json();
+  }
 }

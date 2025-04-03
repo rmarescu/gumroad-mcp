@@ -66,6 +66,30 @@ const getUser: Tool = {
   },
 };
 
+const disableProduct: Tool = {
+  name: "gumroad_disable_product",
+  description: "Disables a product by its ID",
+  inputSchema: {
+    type: "object",
+    properties: {
+      product_id: { type: "string", description: "The ID of the product to disable" },
+    },
+    required: ["product_id"],
+  },
+};
+
+const enableProduct: Tool = {
+  name: "gumroad_enable_product",
+  description: "Enables a product by its ID",
+  inputSchema: {
+    type: "object",
+    properties: {
+      product_id: { type: "string", description: "The ID of the product to enable" },
+    },
+    required: ["product_id"],
+  },
+};
+
 export const createServer = (accessToken: string, baseUrl: string | undefined) => {
   const gumroadClient = new GumroadClient(accessToken, baseUrl);
 
@@ -108,6 +132,20 @@ export const createServer = (accessToken: string, baseUrl: string | undefined) =
             content: [{ type: "text", text: JSON.stringify(response) }],
           };
         }
+        case "gumroad_disable_product": {
+          const productId = request.params.arguments.product_id as string;
+          const response = await gumroadClient.disableProduct(productId);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
+        case "gumroad_enable_product": {
+          const productId = request.params.arguments.product_id as string;
+          const response = await gumroadClient.enableProduct(productId);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
         case "gumroad_get_sales": {
           const response = await gumroadClient.getSales(request.params.arguments);
           return {
@@ -135,7 +173,7 @@ export const createServer = (accessToken: string, baseUrl: string | undefined) =
   server.setRequestHandler(ListToolsRequestSchema, () => {
     console.error("Received ListToolsRequest");
     return {
-      tools: [getUser, getProduct, getProducts, getSales],
+      tools: [getUser, getProduct, getProducts, getSales, disableProduct, enableProduct],
     };
   });
 

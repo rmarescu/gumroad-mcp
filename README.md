@@ -15,13 +15,25 @@ Once configured, try these commands in your MCP-compatible client:
 - List my top-selling products on Gumroad from last year
 - Show month-over-month trend of my top-selling product last year
 - Show sales for my product "Product Name"
+- Disable my product with ID "12345"
+- Enable my product with ID "12345"
 
 ## Tools
 
-1. [`gumroad_get_products`](https://gumroad.com/api#products)
-2. [`gumroad_get_product`](https://gumroad.com/api#products)
-3. [`gumroad_get_sales`](https://gumroad.com/api#sales)
-4. [`gumroad_get_user`](https://gumroad.com/api#user)
+### [Products](https://gumroad.com/api#products)
+
+- `gumroad_get_products` - Get all products
+- `gumroad_get_product` - Get a single product by ID
+- `gumroad_disable_product` - Disable a product
+- `gumroad_enable_product` - Enable a product
+
+### [Sales](https://gumroad.com/api#sales)
+
+- `gumroad_get_sales` - Get sales data
+
+### [User](https://gumroad.com/api#user)
+
+- `gumroad_get_user` - Get authenticated user data
 
 ## Setup
 
