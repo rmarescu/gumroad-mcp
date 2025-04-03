@@ -19,8 +19,9 @@ Once configured, try these commands in your MCP-compatible client:
 ## Tools
 
 1. [`gumroad_get_products`](https://gumroad.com/api#products)
-2. [`gumroad_get_sales`](https://gumroad.com/api#sales)
-3. [`gumroad_get_user`](https://gumroad.com/api#user)
+2. [`gumroad_get_product`](https://gumroad.com/api#products)
+3. [`gumroad_get_sales`](https://gumroad.com/api#sales)
+4. [`gumroad_get_user`](https://gumroad.com/api#user)
 
 ## Setup
 

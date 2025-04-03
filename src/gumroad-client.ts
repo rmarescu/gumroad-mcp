@@ -92,9 +92,15 @@ export class GumroadClient {
   }
 
   async getUser(): Promise<{ success: boolean; user?: GumroadUser; message?: string }> {
-    const token = this.headers.Authorization.split(" ")[1];
-    const url = `${this.apiUrl}/user?access_token=${token}`;
-    console.error("Fetching user from:", url);
+    const url = `${this.apiUrl}/user`;
+    console.error("Making request to:", url);
+    const response = await fetch(url, { headers: this.headers });
+    return response.json();
+  }
+
+  async getProduct(productId: string): Promise<{ success: boolean; product?: Product; message?: string }> {
+    const url = `${this.apiUrl}/products/${productId}`;
+    console.error("Making request to:", url);
     const response = await fetch(url, { headers: this.headers });
     return response.json();
   }
@@ -110,10 +116,6 @@ export class GumroadClient {
   async getSales(params?: GetSalesArgs): Promise<GumroadResponse<Sale>> {
     const queryParams = new URLSearchParams();
 
-    // Add access token from headers
-    const token = this.headers.Authorization.split(" ")[1];
-    queryParams.append("access_token", token);
-
     if (params?.after) queryParams.append("after", params.after);
     if (params?.before) queryParams.append("before", params.before);
     if (params?.product_id) queryParams.append("product_id", params.product_id);
@@ -122,9 +124,9 @@ export class GumroadClient {
     if (params?.page_key) queryParams.append("page_key", params.page_key);
 
     const url = `${this.apiUrl}/sales${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
-    console.error("Fetching sales from:", url);
-    const response = await fetch(url, { headers: this.headers });
+    console.error("Making request to:", url);
 
+    const response = await fetch(url, { headers: this.headers });
     return response.json();
   }
 }

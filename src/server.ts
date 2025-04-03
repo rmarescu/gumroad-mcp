@@ -45,6 +45,18 @@ const getSales: Tool = {
   },
 };
 
+const getProduct: Tool = {
+  name: "gumroad_get_product",
+  description: "Retrieves a single product by its ID",
+  inputSchema: {
+    type: "object",
+    properties: {
+      product_id: { type: "string", description: "The ID of the product to retrieve" },
+    },
+    required: ["product_id"],
+  },
+};
+
 const getUser: Tool = {
   name: "gumroad_get_user",
   description: "Retrieves the authenticated user's data. Available with any scope.",
@@ -89,6 +101,13 @@ export const createServer = (accessToken: string, baseUrl: string | undefined) =
             content: [{ type: "text", text: JSON.stringify(response) }],
           };
         }
+        case "gumroad_get_product": {
+          const productId = request.params.arguments.product_id as string;
+          const response = await gumroadClient.getProduct(productId);
+          return {
+            content: [{ type: "text", text: JSON.stringify(response) }],
+          };
+        }
         case "gumroad_get_sales": {
           const response = await gumroadClient.getSales(request.params.arguments);
           return {
@@ -116,7 +135,7 @@ export const createServer = (accessToken: string, baseUrl: string | undefined) =
   server.setRequestHandler(ListToolsRequestSchema, () => {
     console.error("Received ListToolsRequest");
     return {
-      tools: [getUser, getProducts, getSales],
+      tools: [getUser, getProduct, getProducts, getSales],
     };
   });
 
