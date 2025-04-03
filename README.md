@@ -1,5 +1,9 @@
 # Gumroad MCP Server
 
+<video src="https://gist.github.com/user-attachments/assets/3750b072-053c-40a0-9c89-361f861350db" controls autoplay loop muted>
+Your browser does not support the video tag.
+</video>
+
 ## Overview
 
 A Model Context Protocol (MCP) server implementation for Gumroad, enabling MCP-compatible AI clients like Claude Desktop to interract with [Gumroad's API](https://gumroad.com/api).
