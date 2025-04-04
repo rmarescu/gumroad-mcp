@@ -2,9 +2,10 @@
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
+import { mainCommand } from "./commands/index.js";
 import { createServer } from "./server.js";
 
-const main = async () => {
+mainCommand.action(async () => {
   const accessToken = process.env.GUMROAD_ACCESS_TOKEN;
   const baseUrl = process.env.GUMROAD_BASE_URL;
 
@@ -22,9 +23,9 @@ const main = async () => {
     await server.close();
     process.exit(0);
   });
-};
+});
 
-main().catch((error) => {
+mainCommand.parseAsync().catch((error) => {
   console.error("Server error:", error);
   process.exit(1);
 });

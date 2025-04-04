@@ -38,7 +38,9 @@
   "homepage": "https://github.com/rmarescu/gumroad-mcp#readme",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.8.0",
+    "commander": "^13.1.0",
     "dotenv": "^16.4.7",
+    "picocolors": "^1.1.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
