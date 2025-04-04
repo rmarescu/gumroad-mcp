@@ -1,6 +1,6 @@
 {
   "name": "gumroad-mcp",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Gumroad MCP Server",
   "type": "module",
   "main": "dist/index.js",
