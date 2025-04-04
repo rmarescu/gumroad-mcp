@@ -168,7 +168,7 @@ export const createServer = (accessToken: string, baseUrl: string | undefined) =
   const server = new Server(
     {
       name: "Gumroad MCP Server",
-      version: "0.0.5",
+      version: "0.0.6",
     },
     {
       capabilities: {

@@ -88,7 +88,7 @@ Keep your access token safe and confidential, like a password. You'll need to in
 If you use Claude Desktop, you can use the interactive setup:
 
 ```bash
-npx @gumroad-mcp init
+npx gumroad-mcp@latest init
 ```
 
 ### Manual installation
