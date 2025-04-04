@@ -51,11 +51,28 @@ Once configured, try these commands in your MCP-compatible client:
 
 ## Setup
 
-### Generate an access token
+### Prerequisites
 
-Gumroad API requires [authentication](https://gumroad.com/api#api-authentication). To generate an access token for the Gumroad API, follow these steps:
+- [Node.js](https://nodejs.org) 18 or later
+- A Gumroad account with API access
+- An MCP-compatible client (like Claude Desktop)
 
-1. [Log in](https://gumroad.com/login) to your Gumroad account.
+To verify you have Node installed, open the command line on your computer.
+
+- On macOS, open the Terminal from your Applications folder
+- On Windows, press Windows + R, type “cmd”, and press Enter
+
+Once in the command line, verify you have Node installed by entering in the following command:
+
+```bash
+node --version
+```
+
+### Generate a Gumroad access token
+
+Gumroad API requires [authentication](https://gumroad.com/api#api-authentication). To generate an access token, follow these steps:
+
+1. [Log in](https://gumroad.com/login) to your Gumroad account (or your own instance of Gumroad).
 2. Go to Settings > [Advanced](https://gumroad.com/settings/advanced) page.
 3. Create a new application by providing the following information:
    - Application icon (optional): A small thumbnail image to identify your application.
@@ -86,8 +103,6 @@ Example config
 }
 ```
 
-### Using on your own Gumroad installation
-
 If you're using a self-hosted Gumroad instance, you can configure the server to connect to your custom URL via `GUMROAD_BASE_URL`:
 
 ```json
@@ -107,6 +122,8 @@ If you're using a self-hosted Gumroad instance, you can configure the server to 
 
 > [!NOTE]
 > The server automatically appends the API version (`/v2`) to your base URL. For example, with `GUMROAD_BASE_URL="https://example.com"`, API requests will be sent to `https://example.com/v2`.
+
+Please refer to these [instructions](https://modelcontextprotocol.io/quickstart/user) on how to add the MCP Server to Claude Desktop.
 
 ## Contributing
 
