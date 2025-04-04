@@ -111,8 +111,9 @@ initCommand.action(async () => {
         {
           title: "Updating Claude Desktop settings",
           enabled: (ctx) => ctx.claudeDesktopInstalled && !!ctx.accessToken,
-          task: (ctx, configTask) => {
+          task: async (ctx, configTask) => {
             const configPath = getClaudeConfigPath();
+            const npxPath = await getNpxPath();
 
             if (!fs.existsSync(configPath)) {
               throw new Error(`Can't find Claude's config file at: ${configPath}`);
@@ -126,7 +127,7 @@ initCommand.action(async () => {
             }
 
             config.mcpServers[SERVER_NAME] = {
-              command: "npx",
+              command: npxPath,
               args: ["-y", "gumroad-mcp@latest"],
               env: {
                 GUMROAD_ACCESS_TOKEN: ctx.accessToken,
@@ -242,4 +243,14 @@ const execAsync = (command: string) =>
 const isClaudeDesktopInstalled = () => {
   const configPath = getClaudeConfigPath();
   return fs.existsSync(configPath);
+};
+
+const getNpxPath = async (): Promise<string> => {
+  try {
+    const command = process.platform === "win32" ? "where npx" : "which npx";
+    const result = (await execAsync(command)) as { stdout: string; stderr: string };
+    return result.stdout.trim();
+  } catch {
+    return "npx";
+  }
 };
