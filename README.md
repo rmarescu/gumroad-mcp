@@ -10,6 +10,16 @@ A Model Context Protocol (MCP) server implementation for Gumroad, enabling MCP-c
 
 The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) allows AI assistants to interact with external tools and services.
 
+## Quickstart
+
+Start using Gumroad MCP Server with Claude Desktop in seconds:
+
+```bash
+npx gumroad-mcp@latest init
+```
+
+This command sets up the MCP server with your [Gumroad credentials](#generate-a-gumroad-access-token) through an interactive prompt.
+
 ## Usage
 
 Once configured, try these commands in your MCP-compatible client:
@@ -60,7 +70,7 @@ Once configured, try these commands in your MCP-compatible client:
 To verify you have Node installed, open the command line on your computer.
 
 - On macOS, open the Terminal from your Applications folder
-- On Windows, press Windows + R, type “cmd”, and press Enter
+- On Windows, press Windows + R, type "cmd", and press Enter
 
 Once in the command line, verify you have Node installed by entering in the following command:
 
@@ -83,7 +93,7 @@ Gumroad API requires [authentication](https://gumroad.com/api#api-authentication
 
 Keep your access token safe and confidential, like a password. You'll need to include it in your configuration as shown below.
 
-## Claude Desktop installation
+### Claude Desktop installation
 
 If you use Claude Desktop, you can use the interactive setup:
 
