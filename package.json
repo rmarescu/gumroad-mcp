@@ -16,8 +16,8 @@
     "watch": "tsup --watch",
     "build": "rimraf dist && tsup src/index.ts --format cjs,esm --dts && shx chmod +x dist/index.js",
     "start": "node dist/index.js",
-    "dev": "node --loader ts-node/esm src/index.ts",
-    "dev:inspect": "npx @modelcontextprotocol/inspector node --loader ts-node/esm src/index.ts"
+    "dev": "node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/index.ts",
+    "dev:inspect": "npx @modelcontextprotocol/inspector node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -37,9 +37,12 @@
   },
   "homepage": "https://github.com/rmarescu/gumroad-mcp#readme",
   "dependencies": {
+    "@inquirer/prompts": "^7.4.1",
+    "@listr2/prompt-adapter-inquirer": "^2.0.18",
     "@modelcontextprotocol/sdk": "^1.8.0",
     "commander": "^13.1.0",
     "dotenv": "^16.4.7",
+    "listr2": "^8.2.5",
     "picocolors": "^1.1.1",
     "zod": "^3.24.2"
   },

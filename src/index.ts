@@ -2,8 +2,10 @@
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
-import { mainCommand } from "./commands/index.js";
+import { mainCommand, initCommand } from "./commands/index.js";
 import { createServer } from "./server.js";
+
+mainCommand.addCommand(initCommand);
 
 mainCommand.action(async () => {
   const accessToken = process.env.GUMROAD_ACCESS_TOKEN;

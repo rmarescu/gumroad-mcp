@@ -77,7 +77,6 @@ export default [
       "prefer-promise-reject-errors": "error",
       "prefer-spread": "error",
       "require-await": "error",
-      "sort-keys": ["error", "asc", { caseSensitive: true, natural: false }],
     },
   },
 ];

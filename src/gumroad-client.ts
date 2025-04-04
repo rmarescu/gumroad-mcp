@@ -99,7 +99,7 @@ interface GetSalesArgs {
 }
 
 export class GumroadClient {
-  private static readonly BASE_URL = "https://api.gumroad.com";
+  public static readonly BASE_URL = "https://api.gumroad.com";
 
   private headers: { Authorization: string; "Content-Type": string };
   private apiUrl: string;

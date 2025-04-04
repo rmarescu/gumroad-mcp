@@ -49,7 +49,7 @@ Once configured, try these commands in your MCP-compatible client:
 
 - `gumroad_get_user` - Get authenticated user data
 
-## Setup
+## Installation
 
 ### Prerequisites
 
@@ -83,9 +83,17 @@ Gumroad API requires [authentication](https://gumroad.com/api#api-authentication
 
 Keep your access token safe and confidential, like a password. You'll need to include it in your configuration as shown below.
 
-### Install the server
+## Claude Desktop installation
 
-Works with [Claude Desktop](https://claude.ai/download) or any [other MCP-enabled applications](https://modelcontextprotocol.io/clients).
+If you use Claude Desktop, you can use the interactive setup:
+
+```bash
+npx @gumroad-mcp init
+```
+
+### Manual installation
+
+For [other MCP-enabled applications](https://modelcontextprotocol.io/clients), you will need to update the MCP configuration manually.
 
 Example config
 
