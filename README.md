@@ -6,7 +6,7 @@ Your browser does not support the video tag.
 
 ## Overview
 
-A Model Context Protocol (MCP) server implementation for Gumroad, enabling MCP-compatible AI clients like Claude Desktop to interract with [Gumroad's API](https://gumroad.com/api).
+A Model Context Protocol (MCP) server implementation for [Gumroad](https://gumroad.com), enabling MCP-compatible AI clients like Claude Desktop to interract with [Gumroad's API](https://gumroad.com/api).
 
 The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) allows AI assistants to interact with external tools and services.
 
