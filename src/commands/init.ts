@@ -113,7 +113,7 @@ initCommand.action(async () => {
           enabled: (ctx) => ctx.claudeDesktopInstalled && !!ctx.accessToken,
           task: async (ctx, configTask) => {
             const configFolderPath = getClaudeConfigFolderPath();
-            const configFilePath = getClaudeConfigFilePath();
+            const configFilePath = join(configFolderPath, "claude_desktop_config.json");
             const npxPath = await getNpxPath();
 
             if (!fs.existsSync(configFolderPath)) {
@@ -198,11 +198,6 @@ const getClaudeConfigFolderPath = () => {
   }
 
   return claudeConfigPath;
-};
-
-const getClaudeConfigFilePath = () => {
-  const configFolderPath = getClaudeConfigFolderPath();
-  return join(configFolderPath, "claude_desktop_config.json");
 };
 
 const restartClaudeDesktop = async () => {
