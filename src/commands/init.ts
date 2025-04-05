@@ -112,14 +112,21 @@ initCommand.action(async () => {
           title: "Updating Claude Desktop settings",
           enabled: (ctx) => ctx.claudeDesktopInstalled && !!ctx.accessToken,
           task: async (ctx, configTask) => {
-            const configPath = getClaudeConfigPath();
+            const configFolderPath = getClaudeConfigFolderPath();
+            const configFilePath = getClaudeConfigFilePath();
             const npxPath = await getNpxPath();
 
-            if (!fs.existsSync(configPath)) {
-              throw new Error(`Can't find Claude's config file at: ${configPath}`);
+            if (!fs.existsSync(configFolderPath)) {
+              throw new Error(
+                "I couldn't find Claude Desktop on your system. You'll need to install it first, or follow the manual setup instructions if you're using a different MCP-compatible app.",
+              );
             }
 
-            const configData = fs.readFileSync(configPath, "utf8");
+            if (!fs.existsSync(configFilePath)) {
+              fs.writeFileSync(configFilePath, JSON.stringify({}, null, 2));
+            }
+
+            const configData = fs.readFileSync(configFilePath, "utf8");
             const config = JSON.parse(configData);
 
             if (!config.mcpServers) {
@@ -135,7 +142,7 @@ initCommand.action(async () => {
               },
             };
 
-            fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+            fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
             configTask.title = "Claude settings successfully updated";
           },
         },
@@ -174,23 +181,28 @@ initCommand.action(async () => {
   }
 });
 
-const getClaudeConfigPath = () => {
+const getClaudeConfigFolderPath = () => {
   const platform = process.platform;
 
   let claudeConfigPath: string;
 
   switch (platform) {
     case "win32":
-      claudeConfigPath = join(process.env.APPDATA ?? "", "Claude", "claude_desktop_config.json");
+      claudeConfigPath = join(process.env.APPDATA ?? "", "Claude");
       break;
     case "darwin":
-      claudeConfigPath = join(homedir(), "Library", "Application Support", "Claude", "claude_desktop_config.json");
+      claudeConfigPath = join(homedir(), "Library", "Application Support", "Claude");
       break;
     default:
       throw new Error(`Unsupported platform: ${platform}`);
   }
 
   return claudeConfigPath;
+};
+
+const getClaudeConfigFilePath = () => {
+  const configFolderPath = getClaudeConfigFolderPath();
+  return join(configFolderPath, "claude_desktop_config.json");
 };
 
 const restartClaudeDesktop = async () => {
@@ -241,8 +253,8 @@ const execAsync = (command: string) =>
   });
 
 const isClaudeDesktopInstalled = () => {
-  const configPath = getClaudeConfigPath();
-  return fs.existsSync(configPath);
+  const configFolderPath = getClaudeConfigFolderPath();
+  return fs.existsSync(configFolderPath);
 };
 
 const getNpxPath = async (): Promise<string> => {
