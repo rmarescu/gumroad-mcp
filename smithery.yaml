@@ -28,5 +28,5 @@ startCommand:
       }
     })
   exampleConfig:
-    gumroadAccessToken: sk_test_123456abcdef
+    gumroadAccessToken: 0xKp8mNb2vRtY4wLq9sFhJcX7nMdV5uEaZ1iAoB3CkP
     gumroadBaseUrl: https://example.com
