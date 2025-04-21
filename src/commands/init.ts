@@ -8,10 +8,33 @@ import { ListrInquirerPromptAdapter } from "@listr2/prompt-adapter-inquirer";
 import { Command } from "commander";
 import { Listr } from "listr2";
 import pc from "picocolors";
+import { z } from "zod";
 
 import { GumroadClient } from "../gumroad-client.js";
+import { formatZodError } from "../utils/errors.js";
 
-export const initCommand = new Command("init").description("Initialize Gumroad MCP in Claude Desktop").addHelpText(
+/**
+ * There is no formal schema for this config file, so this is tailored to work with Claude Desktop
+ * Perhaps a standard schema will be proposed in the future
+ * @see https://github.com/modelcontextprotocol/modelcontextprotocol/issues/292
+ */
+const ClaudeDesktopConfigSchema = z
+  .object({
+    mcpServers: z
+      .record(
+        z.object({
+          command: z.string(),
+          args: z.array(z.string()),
+          env: z.record(z.string()),
+        }),
+      )
+      .optional(),
+  })
+  .passthrough();
+
+type ClaudeDesktopConfig = z.infer<typeof ClaudeDesktopConfigSchema>;
+
+export const initCommand = new Command("init").description("Install Gumroad MCP in Claude Desktop").addHelpText(
   "after",
   `
 ${pc.bold("What this will do:")}
@@ -112,15 +135,41 @@ initCommand.action(async () => {
           title: "Updating Claude Desktop settings",
           enabled: (ctx) => ctx.claudeDesktopInstalled && !!ctx.accessToken,
           task: async (ctx, configTask) => {
-            const configPath = getClaudeConfigPath();
+            const configFilePath = join(getClaudeConfigDirPath(), "claude_desktop_config.json");
             const npxPath = await getNpxPath();
+            let config: ClaudeDesktopConfig = {};
 
-            if (!fs.existsSync(configPath)) {
-              throw new Error(`Can't find Claude's config file at: ${configPath}`);
+            let configData: unknown;
+            try {
+              const configFileContent = fs.readFileSync(configFilePath, "utf8");
+              try {
+                configData = JSON.parse(configFileContent);
+              } catch (error) {
+                throw new Error(
+                  `Failed to parse ${configFilePath}. Please fix or remove the file. Error: ${String(error)}`,
+                );
+              }
+            } catch (error) {
+              if (
+                typeof error === "object" &&
+                error !== null &&
+                "code" in error &&
+                (error as { code?: string }).code === "ENOENT"
+              ) {
+                configData = {};
+              } else {
+                throw error;
+              }
             }
 
-            const configData = fs.readFileSync(configPath, "utf8");
-            const config = JSON.parse(configData);
+            try {
+              config = ClaudeDesktopConfigSchema.parse(configData);
+            } catch (error) {
+              if (error instanceof z.ZodError) {
+                throw new Error(formatZodError(error, `Invalid config file ${configFilePath}`));
+              }
+              throw error;
+            }
 
             if (!config.mcpServers) {
               config.mcpServers = {};
@@ -135,7 +184,7 @@ initCommand.action(async () => {
               },
             };
 
-            fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+            fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
             configTask.title = "Claude settings successfully updated";
           },
         },
@@ -174,23 +223,23 @@ initCommand.action(async () => {
   }
 });
 
-const getClaudeConfigPath = () => {
+const getClaudeConfigDirPath = () => {
   const platform = process.platform;
 
-  let claudeConfigPath: string;
+  let claudeConfigDirPath: string;
 
   switch (platform) {
     case "win32":
-      claudeConfigPath = join(process.env.APPDATA ?? "", "Claude", "claude_desktop_config.json");
+      claudeConfigDirPath = join(process.env.APPDATA ?? "", "Claude");
       break;
     case "darwin":
-      claudeConfigPath = join(homedir(), "Library", "Application Support", "Claude", "claude_desktop_config.json");
+      claudeConfigDirPath = join(homedir(), "Library", "Application Support", "Claude");
       break;
     default:
       throw new Error(`Unsupported platform: ${platform}`);
   }
 
-  return claudeConfigPath;
+  return claudeConfigDirPath;
 };
 
 const restartClaudeDesktop = async () => {
@@ -241,8 +290,8 @@ const execAsync = (command: string) =>
   });
 
 const isClaudeDesktopInstalled = () => {
-  const configPath = getClaudeConfigPath();
-  return fs.existsSync(configPath);
+  const dirPath = getClaudeConfigDirPath();
+  return fs.existsSync(dirPath);
 };
 
 const getNpxPath = async (): Promise<string> => {
