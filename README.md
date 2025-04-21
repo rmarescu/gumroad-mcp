@@ -1,5 +1,6 @@
 # Gumroad MCP Server
 
+<a href="https://smithery.ai/server/@rmarescu/gumroad-mcp"><img alt="Smithery Badge" src="https://smithery.ai/badge/@rmarescu/gumroad-mcp"></a>
 <video src="https://gist.github.com/user-attachments/assets/3750b072-053c-40a0-9c89-361f861350db" controls autoplay loop muted>
 Your browser does not support the video tag.
 </video>
@@ -60,6 +61,14 @@ Once configured, try these commands in your MCP-compatible client:
 - `gumroad_get_user` - Get authenticated user data
 
 ## Installation
+
+### Installing via Smithery
+
+To install gumroad-mcp for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@rmarescu/gumroad-mcp):
+
+```bash
+npx -y @smithery/cli install @rmarescu/gumroad-mcp --client claude
+```
 
 ### Prerequisites
 

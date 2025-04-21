@@ -1,0 +1,32 @@
+# Smithery configuration file: https://smithery.ai/docs/config#smitheryyaml
+
+startCommand:
+  type: stdio
+  configSchema:
+    # JSON Schema defining the configuration options for the MCP.
+    type: object
+    required:
+      - gumroadAccessToken
+    properties:
+      gumroadAccessToken:
+        type: string
+        description: Your Gumroad access token for authenticating API requests
+      gumroadBaseUrl:
+        type: string
+        default: https://api.gumroad.com
+        description: Base URL for Gumroad API (without trailing version). Default
+          appends /v2
+  commandFunction:
+    # A JS function that produces the CLI command based on the given config to start the MCP on stdio.
+    |-
+    (config) => ({
+      command: "node",
+      args: ["dist/index.js"],
+      env: {
+        GUMROAD_ACCESS_TOKEN: config.gumroadAccessToken,
+        ...(config.gumroadBaseUrl && { GUMROAD_BASE_URL: config.gumroadBaseUrl })
+      }
+    })
+  exampleConfig:
+    gumroadAccessToken: 0xKp8mNb2vRtY4wLq9sFhJcX7nMdV5uEaZ1iAoB3CkP
+    gumroadBaseUrl: https://example.com
