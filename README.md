@@ -5,6 +5,10 @@
 Your browser does not support the video tag.
 </video>
 
+<a href="https://glama.ai/mcp/servers/@rmarescu/gumroad-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@rmarescu/gumroad-mcp/badge" alt="Gumroad MCP server" />
+</a>
+
 ## Overview
 
 A Model Context Protocol (MCP) server implementation for [Gumroad](https://gumroad.com), enabling MCP-compatible AI clients like Claude Desktop to interact with [Gumroad API](https://gumroad.com/api).
