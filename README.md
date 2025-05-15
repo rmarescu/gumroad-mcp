@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/rmarescu-gumroad-mcp-badge.png)](https://mseep.ai/app/rmarescu-gumroad-mcp)
+
 # Gumroad MCP Server
 
 <a href="https://smithery.ai/server/@rmarescu/gumroad-mcp"><img alt="Smithery Badge" src="https://smithery.ai/badge/@rmarescu/gumroad-mcp"></a>
